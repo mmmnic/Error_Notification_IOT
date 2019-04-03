@@ -1,7 +1,5 @@
 #include <Keypad.h>
- 
-//Bạn có thể tham khảo thêm tại: https://github.com/Chris--A/Keypad/blob/master/examples/HelloKeypad/HelloKeypad.ino
- 
+  
 const byte rows = 4; //số hàng
 const byte columns = 4; //số cột
  
