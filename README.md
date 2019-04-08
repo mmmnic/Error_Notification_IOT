@@ -1,6 +1,6 @@
 # ITProjectSolution
-# Team: Hoang Anh Quoc, Ngo Quoc Nhu, Bui Anh Khoa
-# ID github: mmmnic, ngonhu159, fxanhkhoa
+### Team: Hoang Anh Quoc, Ngo Quoc Nhu, Bui Anh Khoa
+### ID github: mmmnic, ngonhu159, fxanhkhoa
 
 __*How to add Database*__
   - Open phpMyadmin
