@@ -7,13 +7,14 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-        <!-- <script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css"></script>
+        <script>
             $(document).ready(function(){
-                setInterval(function(){ 
-                    location.reload();
-                    }, 3000);
+                $('#noti').DataTable();
             });
-         </script> -->
+         </script>
     </head>
     <body>
         <div class="container">
@@ -35,14 +36,18 @@
                 <label for="ERROR_INDEX">ERROR_INDEX:</label>
                 <input type="text" class="form-control" id="ERROR_INDEX" placeholder="Enter ERROR_INDEX" name="ERROR_INDEX">
             </div>
-            <button type="submit" class="btn btn-success">Submit</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
         </form>
         </div>
     </body>
 </html>
 
 <div class="container">
+    <h2>History</h2>
     <?php
+            
         $servername = "localhost";
         $username = "IT_PROJECT";
         $password = "12345678";
@@ -60,7 +65,7 @@
         {
             if ((isset($_POST["MACHINE_ID"])) && (isset($_POST["MACHINE_INDEX"])) && (isset($_POST["ERROR_INDEX"])))
             {
-               $time = $_POST["TIME"]; // Nếu dùng input thì comment set time bên dưới lại
+               //$time = $_POST["TIME"]; // Nếu dùng input thì comment set time bên dưới lại
                $MACHINE_ID = $_POST["MACHINE_ID"]; // ID máy
                $MACHINE_INDEX = $_POST["MACHINE_INDEX"]; // Máy số
                $ERROR_INDEX = $_POST["ERROR_INDEX"]; // 
@@ -81,11 +86,11 @@
             }
         }
         
-        // Insert to table
+        // get data from table
         $sql = "SELECT * FROM ERROR_NOTI";
         $result = $conn->query($sql);
     ?>
-    <table class="table table-striped">
+    <table id="noti" class="table table-striped">
         <thead>
             <tr>
             <th>Time</th>
@@ -114,4 +119,10 @@
             ?>
         </tbody>
     </table>
+    <div class="container">
+        <h2>Functions</h2>
+        <form action="DownloadExcel.php" method="POST">
+            <button type="submit" class="btn btn-info">Download in Excel</button>
+        </form>
+    </div>
 </div>
