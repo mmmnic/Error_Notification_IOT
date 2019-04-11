@@ -81,12 +81,20 @@
                      VALUES ('$time', $MACHINE_INDEX, $ERROR_INDEX, '$MACHINE_ID')";
 
                $message = "wrong answer";
-               echo "<script type='text/javascript'>alert('$sql');</script>";
-               if ($conn->query($sql) === TRUE) {
+            //    echo "<script type='text/javascript'>alert('$sql');</script>";
+               if ($conn->query($sql) == TRUE) {
                   // echo "Record updated successfully";
                } else {
                   // echo "Error updating record: " . $conn->error;
                }
+
+               /////////////// Update Status /////////////////
+               $sql = "UPDATE ERROR_MACHINE_STATUS SET ERROR_INDEX = $ERROR_INDEX WHERE MACHINE_INDEX = $MACHINE_INDEX";
+               if ($conn->query($sql) == TRUE) {
+                // echo "Record updated successfully";
+                } else {
+                    // echo "Error updating record: " . $conn->error;
+                }
             }
         }
         
