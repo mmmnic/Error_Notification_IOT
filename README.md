@@ -13,3 +13,4 @@ __*How to post data*__
     + ERROR_INDEX: (1, 2 ,3) for 3 types of error in project
   - Just post to ErrorNoti.php
   - To find out history just open web page ErrorNoti.php
+- 
