@@ -1,11 +1,14 @@
 #include <ESP8266WiFi.h>
 #include <Arduino_JSON.h>
+#include <SoftwareSerial.h>
 
 const char* ssid = "UIT_Guest";
 const char* password = "1denmuoi1";
-const char* host = "192.168.0.100";
+const char* host = "192.168.0.104";
 WiFiClient client;
 const int httpPort = 8080;
+
+SoftwareSerial mySerial(D5, D1); // RX, TX
 
 int temperature, humidity;
 String jsonString = "";
@@ -14,6 +17,8 @@ JSONVar myITSolution;
 void setup() {
   Serial.begin(9600);
   Serial.println();
+
+  mySerial.begin(9600);
 
   WiFi.begin(ssid, password);
 
@@ -28,19 +33,19 @@ void setup() {
   Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
 
-  
+  mySerial.print("SSSSS");
 //  Serial.println("Connected to Server");
 }
 
 void loop() {
 
 //  Serial.println("Connected to server");
-  if(Serial.available()>0)    //Checks is there any data in buffer 
+  if(mySerial.available()>0)    //Checks is there any data in buffer 
   {
-    //Serial.print("We got:");
-    char character = char(Serial.read());
+//    Serial.print("We got:");
+    char character = char(mySerial.read());
     jsonString += character;
-    //Serial.print(character);  //Read serial data byte and send back to serial monitor
+    Serial.print(character);  //Read serial data byte and send back to serial monitor
     if (character == '}')
     {
       Serial.println(jsonString);
