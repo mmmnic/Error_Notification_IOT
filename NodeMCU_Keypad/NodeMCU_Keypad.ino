@@ -4,71 +4,50 @@
 #include <WiFiClient.h>
 #include <Keypad.h>
 
-
 String MACHINE_ID    = "1";
 String MACHINE_INDEX = "1";
 
 // Nhap ten wifi va mat khau wifi o day
 const char *ssid = "TP-LINK_F608";
 const char *password = "quenpassroi";
+const char *host = "192.168.1.4";
+const int httpPort = 8080;
 
-const char *host = "http://192.168.1.4:8080/Error_Notification_IOT/ErrorNoti.php";
+WiFiClient client;
 
-const byte rows = 4; //số hàng
-const byte columns = 4; //số cột
+const byte n_rows = 4;
+const byte n_cols = 4;
  
-int holdDelay = 700; //Thời gian trễ để xem là nhấn 1 nút nhằm tránh nhiễu
-int n = 3; // 
-int state = 0; //nếu state =0 ko nhấn,state =1 nhấn thời gian nhỏ , state = 2 nhấn giữ lâu
-char key = 0;
- 
-//Định nghĩa các giá trị trả về
-char keys[rows][columns] =
-{
-  {'1', '2', '3', 'A'},
-  {'4', '5', '6', 'B'},
-  {'7', '8', '9', 'C'},
-  {'*', '0', '#', 'D'},
+char keys[n_rows][n_cols] = {
+  {'1','2','3','A'},
+  {'4','5','6','B'},
+  {'7','8','9','C'},
+  {'*','0','#','D'}
 };
  
-byte rowPins[rows] = {D0, D1, D2 , D3}; //Cách nối chân với Arduino
-byte columnPins[columns] = {D4, D5, D6, D7};
- 
+byte colPins[n_rows] = {D3, D2, D1, D0}; //Cách nối chân với nodemcu
+byte rowPins[n_cols] = {D7, D6, D5, D4};
+
 //cài đặt thư viện keypad
-Keypad keypad = Keypad(makeKeymap(keys), rowPins, columnPins, rows, columns);
-HTTPClient http; 
+Keypad myKeypad = Keypad( makeKeymap(keys), rowPins, colPins, n_rows, n_cols); 
+
 
 void setup() {
-  Serial.begin(9600);//bật serial, baudrate 9600
+  Serial.begin(115200);//bật serial, baudrate 9600
 
+  Serial.println("hello");
   // Ket noi wifi
-  connectWifi();
-
-  // ket noi den web
-  http.begin(host);  
-
+  connectWifi(); 
 }
+
 void loop() {  
-  String postData = "MACHINE_ID:" + MACHINE_ID + "MACHINE_INDEX:" + MACHINE_INDEX + "ERROR_INDEX:";
-  char temp = keypad.getKey();
-
-  
-  if ((int)keypad.getState() ==  PRESSED) {
-    if (temp != 0) {
-      key = temp;
-    }
-  }
+  char myKey = myKeypad.getKey();
  
-  if ((int)keypad.getState() ==  RELEASED) {
-    key += state;
-    state = 0;
-    
-    postData += key;
-    http.POST(postData);
+  if (myKey != NULL){
+    postServer(String (myKey));
+    Serial.println(myKey);
   }
-  delay(100);
 }
-
 
 // Ham ket noi vao wifi
 void connectWifi()
@@ -89,4 +68,29 @@ void connectWifi()
 
   // thong bao neu ket noi thanh cong
   Serial.println("Da ket noi wifi thanh cong");
+}
+
+void postServer(String ERROR_DATA)
+{
+  // Ket noi den server
+  if (!client.connect(host, httpPort)) {
+    Serial.println("Mat ket noi den server");
+    return;
+  }
+  
+  // địa chỉ trang cần post
+  String uri = "http://192.168.0.119:8080/Error_Notification_IOT/ErrorNoti.php";
+  
+  // chuỗi data sau khi đã lấy ra từ json
+  String data = "MACHINE_ID=" + MACHINE_ID + "&MACHINE_INDEX=" + MACHINE_INDEX + "&ERROR_INDEX=" + ERROR_DATA;
+  // gửi request post tới server (dưới đây là 1 chuỗi quy tắc post):
+  client.println("POST " + uri + " HTTP/1.0");
+  client.println("Host: " + String(host));
+  client.println("Accept: /");
+  client.print("Content-Length: ");
+  client.println(data.length());
+  client.println("Content-Type: application/x-www-form-urlencoded");
+  client.println();
+  client.print(data);
+  Serial.println("Gui thanh cong");
 }
