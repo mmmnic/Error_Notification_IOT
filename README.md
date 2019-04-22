@@ -1,4 +1,5 @@
 # ITProjectSolution
+<<<<<<< HEAD
 ### Team: Hoang Anh Quoc, Ngo Quoc Nhu, Bui Anh Khoa
 ### ID github: mmmnic, ngonhu159, fxanhkhoa
 
@@ -15,3 +16,9 @@ __*How to post/get/reset data*__
   - To find out history just open web page ErrorNoti.php
   - To Reset: use page Reset.php
     + Example: Reset.php?MACHINE_INDEX=3    (Reset machine 3)
+=======
+* All project that Page ITProjectSolution did
+
+
+*Link manage project: https://bitly.vn/1e1l or https://docs.google.com/spreadsheets/d/15htIOGi8Feymv-qsbA88L_GHfAqLjfxVB6G2eXG3OKM
+>>>>>>> origin/master
