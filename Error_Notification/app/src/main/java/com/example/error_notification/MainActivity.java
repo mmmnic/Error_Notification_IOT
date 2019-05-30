@@ -76,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
                 final String url = "http://" + inputAddress.getText() + ":" + inputPort.getText() +"/error_noti/GetStatus.php";
                 GlobalStatusNoti.url = "http://" + inputAddress.getText() + ":" + inputPort.getText() +"/error_noti/GetStatus.php";
 //                inputPort.setText(url);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), GlobalStatusNoti.url, Toast.LENGTH_SHORT);
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(getApplicationContext(), GlobalStatusNoti.url, Toast.LENGTH_SHORT);
+//                    }
+//                });
                 SharedPreferences.Editor edit = pre.edit();
 
                 edit.putString("address", String.valueOf(inputAddress.getText()));
