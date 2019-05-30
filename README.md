@@ -3,10 +3,13 @@
 This system is an IOT system. Using an NodeMCU ESP8266 (main Node) for supervisor and 3 NodeMCUs for employee.
 
 Node for employee includes keypad for they to push in the error code.
+
 Then it will send that code and the machine ID to the main Node.
+
 The main Node will show that error to LED 7 segments and send the code to Sever for display on Web and android App.
 
 Team: Hoang Anh Quoc, Ngo Quoc Nhu, Bui Anh Khoa
+
 ID github: mmmnic, ngonhu159, fxanhkhoa
 
 How to add Database:
