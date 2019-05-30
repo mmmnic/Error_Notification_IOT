@@ -1,18 +1,21 @@
+#include <Adafruit_NeoPixel.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <Keypad.h>
 
+
 // Khai báo số của máy
-String MACHINE_ID    = "1";
-String MACHINE_INDEX = "1";
+String MACHINE_ID    = "3";
+String MACHINE_INDEX = "3";
 
 // Nhap ten wifi va mat khau wifi o day
-const char *ssid = "UIT_Guest";
-const char *password = "1denmuoi1";
+const char *ssid = "HUAWEI";
+const char *password = "12345678";
+
 // Nhap dia chi IP cua server va port
-const char *host = "192.168.0.130";
+const char *host = "192.168.43.175";
 const int httpPort = 80;
 
 // Khởi tạo client
@@ -31,11 +34,13 @@ char keys[n_rows][n_cols] = {
 };
 
 //Cách nối chân với NodeMCU
-byte colPins[n_rows] = {D3, D2, D1, D0};  //cột
-byte rowPins[n_cols] = {D7, D6, D5, D4};  //hàng
+byte rowPins[n_rows] = {D7, D6, D5, D4};  //hàng
+byte colPins[n_cols] = {D3, D2, D1, D0};  //cột
 
-//cài đặtkeypad
+//cài đặt keypad
 Keypad myKeypad = Keypad( makeKeymap(keys), rowPins, colPins, n_rows, n_cols); 
+// cài đặt đèn LED
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(1, D8, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   //bật serial, baudrate 115200
@@ -43,14 +48,38 @@ void setup() {
   
   // Ket noi wifi
   connectWifi(); 
+
+  // khởi động đèn LED
+  strip.begin();  
 }
 
-void loop() {  
+void loop()
+{
   // tạo biến myKey để lưu giá trị nút được bấm
   char myKey = myKeypad.getKey();
 
   // kiểm tra nếu có nút bấm
   if (myKey != NULL){
+    // nếu số 1 màu vàng
+    if (myKey == '1')
+    {
+      // cài đặt màu
+      // thứ tự (đèn, mã R, G, B) (0,255,230,0);
+      strip.setPixelColor(0,255,230,0);
+      strip.show();
+    }
+    // nếu số 0 màu xanh
+    else if (myKey == '0')
+    {
+      strip.setPixelColor(0,0,255,0);
+      strip.show();
+    }
+    // còn lại màu đỏ
+    else
+    {
+      strip.setPixelColor(0,255,0,0);
+      strip.show();
+    }
     // sẽ gửi dữ liệu lên server
     postServer(String (myKey));
     // hiện nút vừa bấm ở cổng serial
