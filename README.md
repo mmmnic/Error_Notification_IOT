@@ -1,4 +1,6 @@
 # Error_Notification_IOT
+Team: Hoang Anh Quoc, Ngo Quoc Nhu, Bui Anh Khoa
+ID github: mmmnic, ngonhu159, fxanhkhoa
 
 How to add Database
 
